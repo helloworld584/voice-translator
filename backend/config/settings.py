@@ -12,8 +12,8 @@ DEEPGRAM_API_KEY = os.getenv("DEEPGRAM_API_KEY")
 # ElevenLabs
 ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
 
-# Google Cloud TTS
-GOOGLE_CLOUD_TTS_KEY = os.getenv("GOOGLE_CLOUD_TTS_KEY")
+# Google Cloud TTS — 서비스 계정 JSON 경로 (google-cloud 라이브러리가 직접 읽음)
+# GOOGLE_APPLICATION_CREDENTIALS 환경변수를 .env에서 load_dotenv()로 주입
 GOOGLE_APPLICATION_CREDENTIALS = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 
 # LiveKit
