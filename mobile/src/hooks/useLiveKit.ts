@@ -1,16 +1,10 @@
 /**
- * LiveKit connection hook
- * Manages room connect/disconnect and audio track volume for mixing modes.
+ * LiveKit connection hook — uses livekit-client (web + native 공용)
+ * Audio mixing mode에 따라 수신 트랙 볼륨 조절
  */
-import { useEffect, useRef, useCallback } from "react";
-import {
-  useRoom,
-  useLocalParticipant,
-  useRemoteParticipants,
-  RoomEvent,
-} from "@livekit/react-native";
-import { Room, RoomOptions } from "livekit-client";
-import { useCallStore, AudioMixingMode } from "../store/callStore";
+import { useEffect, useRef, useCallback } from 'react';
+import { Room, RoomEvent, Track, RemoteTrack } from 'livekit-client';
+import { useCallStore, AudioMixingMode } from '../store/callStore';
 
 const MIXING_VOLUMES: Record<AudioMixingMode, { original: number; tts: number }> = {
   pass_through: { original: 1.0, tts: 1.0 },
@@ -30,10 +24,7 @@ export function useLiveKit() {
       disconnect();
     });
 
-    await room.connect(url, token, {
-      autoSubscribe: true,
-    } as RoomOptions);
-
+    await room.connect(url, token);
     setConnected(true);
     return room;
   }, [setConnected, disconnect]);
@@ -46,19 +37,16 @@ export function useLiveKit() {
     disconnect();
   }, [disconnect]);
 
-  // Apply audio mixing mode to remote participant tracks
   const applyMixingMode = useCallback((mode: AudioMixingMode) => {
     if (!roomRef.current) return;
     const volumes = MIXING_VOLUMES[mode];
 
     roomRef.current.remoteParticipants.forEach((participant) => {
-      participant.audioTrackPublications.forEach((pub) => {
-        if (!pub.track) return;
-        const trackName = pub.trackName || "";
-        // TTS tracks are published with name "tts"
-        const isTTS = trackName.includes("tts");
+      participant.trackPublications.forEach((pub) => {
+        if (!pub.track || pub.track.kind !== Track.Kind.Audio) return;
+        const isTTS = (pub.trackName || '').includes('tts');
         const volume = isTTS ? volumes.tts : volumes.original;
-        pub.track.setVolume(volume);
+        (pub.track as RemoteTrack).setVolume(volume);
       });
     });
   }, []);
