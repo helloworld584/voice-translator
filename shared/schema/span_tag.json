@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SpanTagResponse",
+  "type": "object",
+  "required": ["spans", "translation", "rendering_hint", "mode_applied"],
+  "properties": {
+    "spans": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["text", "lang", "type", "action", "confidence"],
+        "properties": {
+          "text": { "type": "string" },
+          "lang": { "enum": ["ko", "en", "mixed"] },
+          "type": { "enum": ["gaming_term", "slang", "proper_noun", "discourse_marker", "general"] },
+          "action": { "enum": ["preserve", "translate", "paraphrase", "soften", "censor", "defer_to_context"] },
+          "confidence": { "type": "number", "minimum": 0.0, "maximum": 1.0 }
+        }
+      }
+    },
+    "translation": { "type": "string" },
+    "rendering_hint": {
+      "type": "object",
+      "required": ["speed", "energy"],
+      "properties": {
+        "speed": { "enum": ["slow", "normal", "fast"] },
+        "energy": { "enum": ["low", "normal", "high"] }
+      }
+    },
+    "mode_applied": { "enum": ["game_tactical", "casual_friend_call", "polite_professional"] }
+  }
+}

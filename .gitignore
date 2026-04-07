@@ -1,0 +1,9 @@
+.env
+.env.local
+.env.production
+__pycache__/
+node_modules/
+.expo/
+*.pyc
+.DS_Store
+credentials/

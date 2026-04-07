@@ -1,0 +1,25 @@
+{
+  "modes": {
+    "game_tactical": {
+      "description": "Short, immediate responses. Preserve tactical/gaming terms.",
+      "preserve_types": ["gaming_term", "proper_noun"],
+      "tone": "direct and concise",
+      "endpointing_ms": 300,
+      "rendering_hint_defaults": { "speed": "fast", "energy": "high" }
+    },
+    "casual_friend_call": {
+      "description": "Natural everyday expressions. Preserve slang and discourse markers.",
+      "preserve_types": ["slang", "discourse_marker"],
+      "tone": "natural and friendly",
+      "endpointing_ms": 600,
+      "rendering_hint_defaults": { "speed": "normal", "energy": "normal" }
+    },
+    "polite_professional": {
+      "description": "Formal register. Soften casual expressions.",
+      "preserve_types": ["proper_noun"],
+      "tone": "formal and respectful",
+      "endpointing_ms": 600,
+      "rendering_hint_defaults": { "speed": "normal", "energy": "low" }
+    }
+  }
+}
